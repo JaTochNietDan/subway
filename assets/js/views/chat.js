@@ -38,13 +38,15 @@ var ChatView = Backbone.View.extend({
   handleInput: function() {
     $('#chat-button').click( function(){
       var message = $('#chat-input').val();
-      if (message.substr(0, 1) === '/') {
-        var commandText = message.substr(1).split(' ');
-        irc.commands.handle(commandText);
-      } else {
-        irc.socket.emit('say', {target: irc.chatWindows.getActive().get('name'), message:message});
+      if(message.length) {
+        if (message.substr(0, 1) === '/') {
+          var commandText = message.substr(1).split(' ');
+          irc.commands.handle(commandText);
+        } else {
+          irc.socket.emit('say', {target: irc.chatWindows.getActive().get('name'), message:message});
+        }
+        $('#chat-input').val('');
       }
-      $('#chat-input').val('');
     });
 
     // Only submit message on enter if both keydown & keyup are present
